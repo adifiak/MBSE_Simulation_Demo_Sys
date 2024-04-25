@@ -16,16 +16,21 @@ package Logical_System_Component_Catalog {
 		port def GPSPort {
 			in item PositionData : Position;
 		}
+
+
 		interface def UAVDataLink {
-			end UAV {
+			port def UAV_DataLinkPort;
+			port def GS_DataLinkPort;
+
+			end UAV : UAV_DataLinkPort{
 				port TelemetryTransmitter : ~TelemetryPort;
 				port CommandReciever : ~CommandPort;
 			}
-			end GS {
+			end GS : GS_DataLinkPort{
 				port TelemetryReciever : TelemetryPort;
 				port CommandTransmitter : CommandPort;
 			}
-
+            
 			connect UAV.TelemetryTransmitter to GS.TelemetryReciever;
 			connect UAV.CommandReciever to GS.CommandTransmitter;
 		}
@@ -48,5 +53,14 @@ package Logical_System_Component_Catalog {
 		
 		part def Logical_GPS{
 			port GPSTransmission : ~GPSPort;
+		}
+
+		part def Atmosphere{
+			
+		}
+
+		connection def UAV_GS_Communication {
+			end uav : Logical_System;
+			end groundStation: Operator;
 		}
 }
