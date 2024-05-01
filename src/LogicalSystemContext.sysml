@@ -27,9 +27,7 @@ package Logical_System_Context {
 		connection abstractAtmosphereLink : UAV_Atmosphere_Connection
 			connect uav references logicalSystem
 			to atmosphere references logicalAtmosphere;
-		
-		//interface DataLink : UAVDataLink /*:>> abstractCommLink*/
-		//	connect UAV.TelemetryTransmitter to system.TelemetryTransmitter;		
+				
 	}
 
 	public part def DetailedLogicalSystemContext :> LogicalSystemContext{
