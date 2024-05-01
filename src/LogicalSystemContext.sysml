@@ -6,11 +6,11 @@ package Logical_System_Context {
 		import Logical_System_Component_Catalog::LogicalPartDefinitions::*;
 		import Logical_System_Component_Catalog::LogicalConnectionDefinitions::*;
 
-		part logicalSystem : LogicalSystem;
-		part logicalOperator : LogicalOperator;
-		part logicalSurface : LogicalSurface;
-		part logicalGPS : LogicalGPS;
-		part logicalAtmosphere : LogicalAtmosphere;
+		part logicalSystem 		: LogicalSystem;
+		part logicalOperator 	: LogicalOperator;
+		part logicalSurface 	: LogicalSurface;
+		part logicalGPS 		: LogicalGPS;
+		part logicalAtmosphere 	: LogicalAtmosphere;
 
 		connection abstractCommLink : UAV_GS_Connection
 			connect uav references logicalSystem
@@ -34,11 +34,11 @@ package Logical_System_Context {
 		import Logical_System_Component_Catalog::LogicalPortDefinitions::*;
 		import Logical_System_Component_Catalog::LogicalPartDefinitions::DetailedLogicalPartDefinitions::*;
 
-		part detailedLogicalSystem : DetailedLogicalSystem :> logicalSystem;
-		part detailedLogicalOperator : DetailedLogicalOperator :> logicalOperator;
-		part detailedLogicalSurface : DetailedLogicalSurface :> logicalSurface;
-		part detailedLogicalGPS : DetailedLogicalGPS :> logicalGPS;
-		part detailedLogicalAtmosphere : DetailedLogicalAtmosphere :> logicalAtmosphere;
+		part detailedLogicalSystem 		: DetailedLogicalSystem 	:> logicalSystem;
+		part detailedLogicalOperator 	: DetailedLogicalOperator 	:> logicalOperator;
+		part detailedLogicalSurface 	: DetailedLogicalSurface 	:> logicalSurface;
+		part detailedLogicalGPS 		: DetailedLogicalGPS 		:> logicalGPS;
+		part detailedLogicalAtmosphere 	: DetailedLogicalAtmosphere :> logicalAtmosphere;
 
 		connection UAVDataLink ::> abstractCommLink {
 			port def UAV_DataLinkPort;
@@ -63,5 +63,46 @@ package Logical_System_Context {
 		bind detailedLogicalOperator.TelemetryReciever = UAVDataLink.GS.TelemetryReciever;
 		bind detailedLogicalOperator.CommandTransmitter = UAVDataLink.GS.CommandTransmitter;
 
+		connection UAV_GPS_Link ::> abstractGpsLink{
+			end UAV : GPSPort;
+			end GPS : ~GPSPort;
+
+			connect UAV to GPS;
+		}
+
+		bind detailedLogicalSystem.GPSReciever = UAV_GPS_Link.UAV;
+		bind detailedLogicalGPS.GPSTransmission = UAV_GPS_Link.GPS;
+
+		connection UAV_Surface_Link ::> abstractSurfaceLink{
+			end UAV : SurfacePort;
+			end Surface : ~SurfacePort;
+
+			connect UAV to Surface;
+		}
+
+		bind detailedLogicalSystem.SurfaceReciever = UAV_Surface_Link.UAV;
+		bind detailedLogicalSurface.SurfaceTransmitter = UAV_Surface_Link.Surface;
+
+		connection UAV_Atmosphere_Link ::> abstractAtmosphereLink{
+			end UAV : SurfacePort;
+			end Atmosphere : ~AtmospherePort;
+
+			connect UAV to Atmosphere;
+		}
+
+		bind detailedLogicalSystem.SurfaceReciever = UAV_Atmosphere_Link.UAV;
+		bind detailedLogicalAtmosphere.AtmosphereTransmission = UAV_Atmosphere_Link.Atmosphere;
+	}
+
+	public part def AbstractUAVSystemWithContext :> DetailedLogicalSystemContext{
+		import Logical_System_Component_Catalog::LogicalPartDefinitions::GeneralPartDefinitions::*;
+
+		part abstractUAV : AbstractUAV :> detailedLogicalSystem{
+			part generalAirframe 			: GeneralAirframe 				subsets components;
+			part generalPowerDeliverySystem : GeneralPowerDeliverySystem 	subsets components;
+			part generalPropultionSystem 	: GeneralPropultionSystem 		subsets components;
+			part generalAvionics 			: GeneralAvionics 				subsets components;
+			part generalPayload 			: GeneralPayload 				subsets components;
+		}
 	}
 }
