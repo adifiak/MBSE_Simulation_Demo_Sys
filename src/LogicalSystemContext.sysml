@@ -103,6 +103,19 @@ package Logical_System_Context {
 			part generalPropultionSystem 	: GeneralPropultionSystem 		subsets components;
 			part generalAvionics 			: GeneralAvionics 				subsets components;
 			part generalPayload 			: GeneralPayload 				subsets components;
+
+			interface psuToController : GeneralPowerSupplyInterface connect
+				psu ::> generalPowerDeliverySystem.powerPort to
+				load ::> generalAvionics.powerPort;
+
+			interface psuToPropultion : GeneralPowerSupplyInterface connect
+				psu ::> generalPowerDeliverySystem.powerPort to
+				load ::> generalPropultionSystem.powerPort;
+
+			interface ControllerToPropultion : GeneralControlInterface connect
+				controler ::> generalAvionics.controlPort to
+				peripherial ::> generalPropultionSystem.controlPort;
+
 		}
 	}
 }

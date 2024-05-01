@@ -37,21 +37,30 @@ package Logical_System_Component_Catalog {
 
 		package GeneralPartDefinitions {
 			import DetailedLogicalPartDefinitions::*;
-			import ScalarValues::Real;
+			import LogicalPortDefinitions::GeneralUAVPorts::*;
+			import ISQ::*;
 
 
 			part def GeneralUAVComponent{
-				attribute mass : Real;
+				attribute mass :> ISQ::mass;
 			}
 
-			part def GeneralAirframe;
-			part def GeneralPowerDeliverySystem;
-			part def GeneralAvionics;
-			part def GeneralPropultionSystem;
-			part def GeneralPayload;
+			part def GeneralAirframe 			:> GeneralUAVComponent;
+			part def GeneralPowerDeliverySystem :> GeneralUAVComponent{
+				port powerPort : ~PowerPort;
+			}
+			part def GeneralAvionics 			:> GeneralUAVComponent{
+				port powerPort 		: PowerPort;
+				port controlPort 	: ~ControlPort;
+			}
+			part def GeneralPropultionSystem 	:> GeneralUAVComponent{
+				port powerPort 		: PowerPort;
+				port controlPort 	: ControlPort;
+			}
+			part def GeneralPayload 			:> GeneralUAVComponent;
 
 			part def AbstractUAV :> DetailedLogicalSystem{
-				attribute mass : Real;
+				attribute mass :> ISQ::mass;
 				part components : GeneralUAVComponent[*];
 			}
 		}
@@ -64,6 +73,11 @@ package Logical_System_Component_Catalog {
 		item def Altitude;
 		item def SurfaceInformation;
 		item def AtmosphericData;
+		package GeneralItemDefinitions{
+			item def Power;
+			item def ControlSignal;
+		}
+		
 	}
 
 	package LogicalPortDefinitions {
@@ -84,10 +98,22 @@ package Logical_System_Component_Catalog {
 		port def AtmospherePort {
 			in item atmosphericData : AtmosphericData;
 		}
+
+		package GeneralUAVPorts {
+			import LogicalItemDefinitions::GeneralItemDefinitions::*;
+
+			port def PowerPort {
+				in item power : Power;
+			}
+			port def ControlPort {
+				in item controlSignal : ControlSignal;
+			}
+		}
 	}
 
 	package LogicalConnectionDefinitions {
 		import LogicalPartDefinitions::*;
+		import LogicalPartDefinitions::GeneralPartDefinitions::*;
 
 		connection def UAV_GS_Connection {
 			end uav : LogicalSystem;
@@ -107,6 +133,16 @@ package Logical_System_Component_Catalog {
 		connection def UAV_Atmosphere_Connection {
 			end uav : LogicalSystem;
 			end atmosphere: LogicalAtmosphere;
+		}
+
+		interface def GeneralPowerSupplyInterface{
+			end psu 	: ~PowerPort;
+			end load	: PowerPort;
+		}
+
+		interface def GeneralControlInterface{
+			end controler 	: ~ControlPort;
+			end peripherial	: ControlPort;
 		}
 	}
 	
