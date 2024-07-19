@@ -12,7 +12,7 @@ package PhysicalElementCatalog{
     }
 
     part def Microcontroller :> Component{
-
+        //Pins...
     }
 
     port def RadioPort {
@@ -22,19 +22,29 @@ package PhysicalElementCatalog{
 
     interface def RadioLink {
 			attribute frequency :> ISQSpaceTime::frequency;
-			end tx : RadioPort;
-			end rx : ~RadioPort;
+			end tx : ~RadioPort;
+			end rx : RadioPort;
 		}
 
-    port def uartPort{}
+    port def UartPort{}
 
     interface def UARTinterface{
-        end master : uartPort;
-        end slave : uartPort;
+        end master : UartPort;
+        end slave : UartPort;
     }
 
-    port spiPort{
-        end master : uartPort;
-        end slave : uartPort;
+    port def SpiPort{}
+
+    interface def SPIinterface{
+        end master : SpiPort;
+        end slave : SpiPort;
     }
+
+    port def PwmPort{}
+
+    interface def PWMinterface{
+        end source : PwmPort;
+        end reciever : PwmPort;
+    }
+
 }

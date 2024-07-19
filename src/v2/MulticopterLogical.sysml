@@ -68,12 +68,12 @@ package MulticopterLogical {
                 in telemetryData : TelemetryData;
             }
 
-            flow of Command
+            /*flow of Command
                 from rx.commandPacket.command
                 to revievedCommands.command;
             flow of TelemetryData
                 from transmittableTelemetry.telemetryData
-                to tx.telemetryPacket.telemetryData;
+                to tx.telemetryPacket.telemetryData;*/
         }
 
         part telemetryModule{
@@ -88,12 +88,12 @@ package MulticopterLogical {
                 in attitude : Attitude;
             }
 
-            flow of Position
+            /*flow of Position
                 from positionMeasurements.position
                 to processedTelemetryData.telemetryData.position;
             flow of Attitude
                 from attitudeMeasurements.attitude
-                to processedTelemetryData.telemetryData.attitude;
+                to processedTelemetryData.telemetryData.attitude;*/
         }
 
         port commandReceptionPort: CommandCommunicationPort;
@@ -106,7 +106,7 @@ package MulticopterLogical {
         connection positionSensorToTelemetryModule
             connect sensor references positionSensor
             to telemetry references telemetryModule{
-                interface
+                interface //TODO Add names
                     connect sensor.positionMeasurement
                     to telemetry.positionMeasurements;
             }

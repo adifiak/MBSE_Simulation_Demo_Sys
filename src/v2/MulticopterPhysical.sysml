@@ -4,13 +4,11 @@ package MulticopterPhysical {
     part def MulticopterPhysicalModel :> CompositeComponent{
         import SI::kg;
 
-        part components : Component[*] redefines subComponents;
-
-        part chasiss : Component :> components{
+        part chasiss : Component :> subComponents{
             redefines mass = 0.5 [kg];
         }
 
-        part mainMicrocontroller : Microcontroller :> components{
+        part mainMicrocontroller : Microcontroller :> subComponents{
             redefines mass = 0.001 [kg];
             port uart1  : UartPort;
             port uart2  : UartPort;
@@ -28,12 +26,12 @@ package MulticopterPhysical {
             port speedReference : PwmPort;
         }
 
-        part MotorAssembly_RF : MotorAssembly :> components;
-        part MotorAssembly_RB : MotorAssembly :> components;
-        part MotorAssembly_LB : MotorAssembly :> components;
-        part MotorAssembly_LF : MotorAssembly :> components;
+        part MotorAssembly_RF : MotorAssembly :> subComponents;
+        part MotorAssembly_RB : MotorAssembly :> subComponents;
+        part MotorAssembly_LB : MotorAssembly :> subComponents;
+        part MotorAssembly_LF : MotorAssembly :> subComponents;
 
-        part radioTranssiever : Component :> components{
+        part radioTranssiever : Component :> subComponents{
             redefines mass = 0.005 [kg];
             port rx : RadioPort{}
             port tx : RadioPort{}
@@ -41,12 +39,12 @@ package MulticopterPhysical {
             port uart : UartPort;
         }
 
-        part IMU : Component :> components{
+        part IMU : Component :> subComponents{
             redefines mass = 0.001 [kg];
             port spi : SpiPort;
         }
 
-        part GPS : Component :> components{
+        part GPS : Component :> subComponents{
             redefines mass = 0.001 [kg];
             port uart : UartPort;
             port gpsAntenna : RadioPort;
@@ -111,7 +109,7 @@ package MulticopterPhysical {
         port telemetryRadioPort : ~RadioPort{}
         port gpsRadioPort : RadioPort{}
 
-        bind commandRadioPort = radioTranssiever.rx;
+        bind commandRadioPort = radioTranssiever.rx;// Might be flows
         bind telemetryRadioPort = radioTranssiever.tx;
         bind gpsRadioPort = GPS.gpsAntenna;
     }
