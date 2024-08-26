@@ -20,28 +20,29 @@ package SystemContextPhysical {
         }
 
         connection windEffects
-            connect system
-            to wind{
-                bind system.windSpeed = wind.windSpeed;
-                bind system.windDirection = wind.windDirection;
+            connect sys references system
+            to wnd references wind{
+                bind sys.windSpeed = wnd.windSpeed;
+                bind sys.windDirection = wnd.windDirection;
             }
 
-        import ISQSpaceTime::frequency;
+        //import ISQSpaceTime::frequency;
+        import SI::Hz;
 
         connection gsUavCommunication
             connect sys references system
             to gs references groundStation{
-                interface CmdRadioLink : RadioLink
+                interface cmdRadioLink : RadioLink
                     connect rx ::> sys.commandRadioPort
-                    to tx ::> gs.commandRadioPort;/*{
+                    to tx ::> gs.commandRadioPort{
                         redefines frequency = 2500000 [Hz];
-                    }*/
+                    }
                     
-                interface TlRadioLink : RadioLink
+                interface telRadioLink : RadioLink
                     connect tx ::> sys.telemetryRadioPort
-                    to rx ::> gs.telemetryRadioPort;/*{
+                    to rx ::> gs.telemetryRadioPort{
                         redefines frequency = 2500000 [Hz];
-                    }*/
+                    }
             }
 
         connection gpsUavCommunication

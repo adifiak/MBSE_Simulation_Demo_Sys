@@ -5,8 +5,8 @@ package MulticopterPhysical {
         import SI::kg;
 
         //Outside distortions
-        public attribute windSpeed;
-        public attribute windDirection;
+        attribute windSpeed;
+        attribute windDirection;
 
         part chasiss : Component :> subComponents{
             redefines mass = 0.5 [kg];
