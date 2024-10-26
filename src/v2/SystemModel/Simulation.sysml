@@ -1,7 +1,7 @@
 package MulticopterSimulation {
     import SimulationElementCatalog::*;
 
-    part def SimpleMulticopter{
+    part def MulticopterSimpleSimulationModel{
             part def MotorAssembly{//Great place for a trade study.
                 port speedReference : SpeedReferencePort;
             }

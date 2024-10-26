@@ -7,7 +7,7 @@ package SystemContextSimulation{
 
         part wind{}
 
-        part multicopter : SimpleMulticopter;
+        part multicopter : MulticopterSimpleSimulationModel;
 
         connection rfMotorToChasiss : MechanicalConnection
                 connect attached ::> wind

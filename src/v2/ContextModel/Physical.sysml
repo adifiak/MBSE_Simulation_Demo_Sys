@@ -3,6 +3,14 @@ package SystemContextPhysical {
     import MulticopterPhysical::MulticopterPhysicalModel;
 
     part def ContextModelPhysical{
+        part surface{
+
+        }
+
+        part air{
+
+        }
+
         part system : MulticopterPhysicalModel;
 
         part groundStation{
@@ -14,7 +22,7 @@ package SystemContextPhysical {
             port gpsRadioPort : ~RadioPort{}
         }
 
-        part wind{
+        /*part wind{
             public attribute windSpeed;
             public attribute windDirection;
         }
@@ -24,7 +32,7 @@ package SystemContextPhysical {
             to wnd references wind{
                 bind sys.windSpeed = wnd.windSpeed;
                 bind sys.windDirection = wnd.windDirection;
-            }
+            }*/
 
         //import ISQSpaceTime::frequency;
         import SI::Hz;
@@ -32,7 +40,8 @@ package SystemContextPhysical {
         connection gsUavCommunication
             connect sys references system
             to gs references groundStation{
-                interface cmdRadioLink : RadioLink
+                //TODO: Fix radio interfaces
+                /*interface cmdRadioLink : RadioLink
                     connect rx ::> sys.commandRadioPort
                     to tx ::> gs.commandRadioPort{
                         redefines frequency = 2500000 [Hz];
@@ -42,7 +51,7 @@ package SystemContextPhysical {
                     connect tx ::> sys.telemetryRadioPort
                     to rx ::> gs.telemetryRadioPort{
                         redefines frequency = 2500000 [Hz];
-                    }
+                    }*/
             }
 
         connection gpsUavCommunication

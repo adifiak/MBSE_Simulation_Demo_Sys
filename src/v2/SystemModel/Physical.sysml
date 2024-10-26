@@ -58,7 +58,7 @@ package MulticopterPhysical {
         connection mainMicrocontrollerToRadio
             connect controller references mainMicrocontroller
             to radio references radioTranssiever{
-                interface : UARTinterface
+                interface radioUart : UARTinterface
                     connect controller.uart1
                     to radio.uart;
             }
@@ -67,14 +67,14 @@ package MulticopterPhysical {
         connection mainMicrocontrollerToGPS
             connect controller references mainMicrocontroller
             to gps references GPS{
-                interface : UARTinterface
+                interface gpsUart: UARTinterface
                     connect controller.uart2
                     to gps.uart;
             }
         connection mainMicrocontrollerToIMU
             connect controller references mainMicrocontroller
             to imu references IMU{
-                interface : SPIinterface
+                interface imuSpi: SPIinterface
                     connect controller.spi
                     to imu.spi;
             }
@@ -83,28 +83,28 @@ package MulticopterPhysical {
         connection mainMicrocontrollerToMotorAssembly_RF
             connect controller references mainMicrocontroller
             to motor references MotorAssembly_RF{
-                interface : PWMinterface
+                interface rfMotorPwm : PWMinterface
                     connect controller.pwm1
                     to motor.speedReference;
             }
         connection mainMicrocontrollerToMotorAssembly_RB
             connect controller references mainMicrocontroller
             to motor references MotorAssembly_RB{
-                interface : PWMinterface
+                interface rbMotorPwm : PWMinterface
                     connect controller.pwm2
                     to motor.speedReference;
             }
         connection mainMicrocontrollerToMotorAssembly_LB
             connect controller references mainMicrocontroller
             to motor references MotorAssembly_LB{
-                interface : PWMinterface
+                interface lbMotorPwm : PWMinterface
                     connect controller.pwm3
                     to motor.speedReference;
             }
         connection mainMicrocontrollerToMotorAssembly_LF
             connect controller references mainMicrocontroller
             to motor references MotorAssembly_LF{
-                interface : PWMinterface
+                interface lfMotorPwm : PWMinterface
                     connect controller.pwm4
                     to motor.speedReference;
             }

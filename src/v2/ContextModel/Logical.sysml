@@ -3,6 +3,8 @@ package SystemContextLogical {
     import MulticopterLogical::MulticopterLogicalModel;
 
     part def ContextModelLogical{
+        
+
         part system : MulticopterLogicalModel;
 
         part groundStation{
